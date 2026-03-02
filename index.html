@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acortando la distancia 💞</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background: linear-gradient(135deg, #ffe0ec, #fff5f9);
+    font-family: Arial, sans-serif;
+    text-align:center;
+    overflow:hidden;
+}
+
+.contenedor{
+    margin-top:80px;
+    padding:20px;
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    font-size:28px;
+    color:#d6336c;
+}
+
+.distancia{
+    font-size:40px;
+    margin:20px 0;
+    font-weight:bold;
+}
+
+.mensaje{
+    font-size:18px;
+    min-height:40px;
+    margin:15px 0;
+    color:#555;
+    transition: opacity 0.4s;
+}
+
+button{
+    padding:15px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    background:#ff4d6d;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+#lluvia{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+}
+
+.emoji{
+    position:absolute;
+    animation: caer linear forwards;
+}
+
+@keyframes caer{
+    from{
+        transform: translateY(-10vh);
+        opacity:1;
+    }
+    to{
+        transform: translateY(110vh);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="lluvia"></div>
+
+<div class="contenedor">
+    <h1>
+        📍 Distancia entre 
+        Santa Marta 🇨🇴 y San José 🇨🇷
+    </h1>
+
+    <div class="distancia" id="km">1050 km</div>
+
+    <div class="mensaje" id="mensaje">
+        Pero vamos a hacer algo al respecto…
+    </div>
+
+    <button id="acercar">✨ Acercarnos un poquito</button>
+</div>
+
+<script>
+let distancia = 1050;
+const kmTexto = document.getElementById("km");
+const mensaje = document.getElementById("mensaje");
+const boton = document.getElementById("acercar");
+const lluvia = document.getElementById("lluvia");
+
+const eventos = [
+    {km:900, texto:"🌊 Cruzando un poquito de mar… Prometo no marearme."},
+    {km:750, texto:"☁️ Las nubes dicen que vamos bien."},
+    {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto."},
+    {km:450, texto:"🐱 Nivel de ternura detectado en aumento."},
+    {km:300, texto:"🍿 Confirmado: compartir tiempo juntos reduce kilómetros."},
+    {km:150, texto:"😌 La distancia empieza a ponerse nerviosa…"},
+    {km:50, texto:"💓 Esto ya se siente demasiado cerca."},
+    {km:10, texto:"⚠️ Advertencia: podría estar encariñándome más de lo permitido."}
+];
+
+function actualizarMensaje(){
+    for(let evento of eventos){
+        if(distancia <= evento.km && !evento.mostrado){
+            mensaje.style.opacity = 0;
+            setTimeout(()=>{
+                mensaje.innerHTML = evento.texto;
+                mensaje.style.opacity = 1;
+            },300);
+            evento.mostrado = true;
+        }
+    }
+}
+
+function crearEmoji(){
+    const emojis = ["💖","💕","🐱","✨"];
+    const emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+    emoji.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+    emoji.style.left = Math.random()*100 + "vw";
+    emoji.style.fontSize = (20 + Math.random()*25) + "px";
+    emoji.style.animationDuration = (3 + Math.random()*2) + "s";
+    lluvia.appendChild(emoji);
+    setTimeout(()=>emoji.remove(),5000);
+}
+
+function lluviaContinua(){
+    setInterval(crearEmoji,150);
+}
+
+boton.addEventListener("click", ()=>{
+    if(distancia > 0){
+        distancia -= 75;
+        if(distancia < 0) distancia = 0;
+        kmTexto.textContent = distancia + " km";
+        actualizarMensaje();
+    }
+
+    if(distancia === 0){
+        boton.style.display="none";
+
+        setTimeout(()=>{
+            document.querySelector(".contenedor").innerHTML = `
+                <h1>🎉 Distancia física: 0 km</h1>
+                <p>
+                Igual me gusta recorrerla contigo.  
+                Sin prisa. Sin presión. Solo nosotros.
+                </p>
+                <button onclick="mensajeFinal()">
+                💞 Seguir acortando distancias invisibles
+                </button>
+            `;
+            lluviaContinua();
+        },400);
+    }
+});
+
+function mensajeFinal(){
+    document.querySelector(".contenedor").innerHTML = `
+        <h1>Gracias por hacer que hablar contigo sea tan fácil 🐱</h1>
+        <p>Eso vale más que cualquier kilómetro.</p>
+    `;
+}
+</script>
+
+</body>
+</html>
