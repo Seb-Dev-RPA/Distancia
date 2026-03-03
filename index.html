@@ -18,8 +18,6 @@ body{
 .contenedor{
     margin-top:70px;
     padding:20px;
-    position:relative;
-    z-index:2;
     max-width:500px;
     margin-left:auto;
     margin-right:auto;
@@ -45,7 +43,7 @@ h1{
 }
 
 #gif-container{
-    height:240px; /* espacio fijo para que nada se mueva */
+    height:240px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -60,7 +58,6 @@ h1{
 }
 
 button{
-    margin-top:25px;
     padding:15px 25px;
     font-size:18px;
     border:none;
@@ -68,6 +65,15 @@ button{
     background:#ff4d6d;
     color:white;
     cursor:pointer;
+    transition:0.3s;
+}
+
+.boton-arriba{
+    margin-top:10px;
+}
+
+.boton-normal{
+    margin-top:25px;
 }
 
 .final-mensaje{
@@ -81,7 +87,7 @@ button{
 <body>
 
 <div class="contenedor">
-    <h1>📍 Distancia entre tú y yo</h1>
+    <h1>📍 Distancia entre tú y yo 🇨🇴 ➝ 🇨🇷</h1>
 
     <div class="distancia" id="km">1050 km</div>
 
@@ -93,7 +99,7 @@ button{
         <img id="gif">
     </div>
 
-    <button id="acercar">✨ Acercarnos un poquito</button>
+    <button id="acercar" class="boton-arriba">✨ Acercarnos un poquito</button>
 </div>
 
 <script>
@@ -107,13 +113,13 @@ const gif = document.getElementById("gif");
 
 const eventos = [
     {km:975, texto:"😌 ¿Lista?"},
-    {km:900, texto:"🌊 Cruzando un poquito de mar…", gif:"IMG_3415.gif"},
-    {km:750, texto:"☁️ Las nubes dicen que vamos bien.", gif:"IMG_3418.gif"},
-    {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto.", gif:"IMG_3419.gif"},
-    {km:450, texto:"🐱 Nivel de ternura detectado en aumento.", gif:"IMG_3420.gif"},
-    {km:300, texto:"🍿 Compartir tiempo juntos reduce kilómetros.", gif:"IMG_3421.gif"},
-    {km:150, texto:"😌 La distancia empieza a ponerse nerviosa…", gif:"IMG_3422.gif"},
-    {km:75, texto:"💓 Esto ya se siente demasiado cerca.", gif:"IMG_3423.gif"}
+    {km:900, texto:"🌊 Cruzando el mar poquito a poquito…", gif:"IMG_3414.gif"},
+    {km:750, texto:"☁️ Las nubes dicen que vamos bien.", gif:"IMG_3415.gif"},
+    {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto.", gif:"IMG_3418.gif"},
+    {km:450, texto:"🐱 Nivel de ternura detectado en aumento.", gif:"IMG_3419.gif"},
+    {km:300, texto:"🍿 Compartir tiempo juntos reduce kilómetros.", gif:"IMG_3420.gif"},
+    {km:150, texto:"😌 La distancia empieza a ponerse nerviosa…", gif:"IMG_3421.gif"},
+    {km:75, texto:"💓 Esto ya se siente demasiado cerca.", gif:"IMG_3422.gif"}
 ];
 
 function actualizarMensaje(){
@@ -130,6 +136,10 @@ function actualizarMensaje(){
                     gif.src = evento.gif;
                     gif.style.display = "block";
                     gif.style.opacity = 1;
+                    boton.className = "boton-normal";
+                }else{
+                    gif.style.display = "none";
+                    boton.className = "boton-arriba";
                 }
 
                 mensaje.style.opacity = 1;
@@ -164,12 +174,27 @@ boton.addEventListener("click", ()=>{
                     🎉 Distancia física: 0 km 💖
                 </h1>
                 <p style="font-size:22px;">
-                    Igual me gusta recorrerla contigo ❤️
+                    Igual me gusta recorrerla contigo.<br>
+                    Sin prisa. Sin presión. Solo nosotros ❤️
                 </p>
+                <button onclick="mensajeFinal()">
+                    💞 Seguir acortando distancias invisibles
+                </button>
             `;
         }
     }
 });
+
+function mensajeFinal(){
+    document.querySelector(".contenedor").innerHTML = `
+        <h1 class="final-mensaje">
+            Gracias por hacer que hablar contigo sea tan fácil 💖
+        </h1>
+        <p style="font-size:22px;">
+            Eso vale más que cualquier kilómetro ❤️
+        </p>
+    `;
+}
 </script>
 
 </body>
