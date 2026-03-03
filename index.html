@@ -28,13 +28,13 @@ h1{
 }
 
 .distancia{
-    font-size:40px;
+    font-size:42px;
     margin:20px 0;
     font-weight:bold;
 }
 
 .mensaje{
-    font-size:18px;
+    font-size:20px;
     min-height:40px;
     margin:15px 0;
     color:#555;
@@ -42,15 +42,16 @@ h1{
 }
 
 #gif{
-    width:200px;
+    width:220px;
     border-radius:15px;
-    margin-top:15px;
+    margin:20px auto 0 auto;
+    display:none;
+    opacity:0;
     transition: opacity 0.4s;
-    display:none; /* 👈 oculto al inicio */
 }
 
 button{
-    margin-top:20px;
+    margin-top:25px;
     padding:15px 25px;
     font-size:18px;
     border:none;
@@ -63,6 +64,12 @@ button{
 
 button:hover{
     transform:scale(1.05);
+}
+
+.final-mensaje{
+    font-size:30px;
+    font-weight:bold;
+    color:#d6336c;
 }
 
 #lluvia{
@@ -94,7 +101,7 @@ button:hover{
 
 <div class="contenedor">
     <h1>
-        📍 Distancia entre Santa Marta 🇨🇴 y San José 🇨🇷
+        📍 Distancia entre tú y yo
     </h1>
 
     <div class="distancia" id="km">1050 km</div>
@@ -117,14 +124,14 @@ const gif = document.getElementById("gif");
 const lluvia = document.getElementById("lluvia");
 
 const eventos = [
-    {km:900, texto:"🌊 Cruzando un poquito de mar… Prometo no marearme.", gif:"IMG_3414.gif"},
-    {km:750, texto:"☁️ Las nubes dicen que vamos bien.", gif:"IMG_3415.gif"},
-    {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto.", gif:"IMG_3418.gif"},
-    {km:450, texto:"🐱 Nivel de ternura detectado en aumento.", gif:"IMG_3419.gif"},
-    {km:300, texto:"🍿 Compartir tiempo juntos reduce kilómetros.", gif:"IMG_3420.gif"},
-    {km:150, texto:"😌 La distancia empieza a ponerse nerviosa…", gif:"IMG_3421.gif"},
-    {km:75, texto:"💓 Esto ya se siente demasiado cerca.", gif:"IMG_3422.gif"},
-    {km:25, texto:"⚠️ Podría estar encariñándome más de lo permitido.", gif:"IMG_3423.gif"}
+    {km:950, texto:"😌 ¿Lista?", gif:"IMG_3414.gif"},
+    {km:900, texto:"🌊 Cruzando un poquito de mar… Prometo no marearme.", gif:"IMG_3415.gif"},
+    {km:750, texto:"☁️ Las nubes dicen que vamos bien.", gif:"IMG_3418.gif"},
+    {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto.", gif:"IMG_3419.gif"},
+    {km:450, texto:"🐱 Nivel de ternura detectado en aumento.", gif:"IMG_3420.gif"},
+    {km:300, texto:"🍿 Compartir tiempo juntos reduce kilómetros.", gif:"IMG_3421.gif"},
+    {km:150, texto:"😌 La distancia empieza a ponerse nerviosa…", gif:"IMG_3422.gif"},
+    {km:75, texto:"💓 Esto ya se siente demasiado cerca.", gif:"IMG_3423.gif"}
 ];
 
 function actualizarMensaje(){
@@ -137,9 +144,9 @@ function actualizarMensaje(){
             setTimeout(()=>{
                 mensaje.innerHTML = evento.texto;
                 gif.src = evento.gif;
-                gif.style.display = "block";   // 👈 aparece solo cuando hay evento
-                mensaje.style.opacity = 1;
+                gif.style.display = "block";
                 gif.style.opacity = 1;
+                mensaje.style.opacity = 1;
             },300);
 
             evento.mostrado = true;
@@ -183,11 +190,15 @@ function ultimoPaso(){
 
     setTimeout(()=>{
         document.querySelector(".contenedor").innerHTML = `
-            <h1>🎉 Distancia física: 0 km</h1>
-            <p>Igual me gusta recorrerla contigo.<br>
-            Sin prisa. Sin presión. Solo nosotros.</p>
+            <h1 class="final-mensaje">
+                🎉 Distancia física: 0 km 💖
+            </h1>
+            <p style="font-size:22px;">
+                Igual me gusta recorrerla contigo.<br>
+                Sin prisa. Sin presión. Solo nosotros ❤️
+            </p>
             <button onclick="mensajeFinal()">
-            💞 Seguir acortando distancias invisibles
+                💞 Seguir acortando distancias invisibles
             </button>
         `;
         lluviaContinua();
@@ -196,8 +207,12 @@ function ultimoPaso(){
 
 function mensajeFinal(){
     document.querySelector(".contenedor").innerHTML = `
-        <h1>Gracias por hacer que hablar contigo sea tan fácil 🐱</h1>
-        <p>Eso vale más que cualquier kilómetro.</p>
+        <h1 class="final-mensaje">
+            Gracias por hacer que hablar contigo sea tan fácil 💖
+        </h1>
+        <p style="font-size:22px;">
+            Eso vale más que cualquier kilómetro ❤️
+        </p>
     `;
 }
 </script>
