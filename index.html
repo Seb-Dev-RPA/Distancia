@@ -88,7 +88,7 @@ button{
     position:fixed;
     top:-30px;
     font-size:24px;
-    animation: caer 4s linear infinite;
+    animation: caer linear infinite;
     pointer-events:none;
 }
 
@@ -100,6 +100,10 @@ button{
 </head>
 
 <body>
+
+<audio id="musica" loop>
+    <source src="Until-I-found-you.m4a" type="audio/mp4">
+</audio>
 
 <div class="contenedor">
     <h1>📍 Distancia entre tú y yo 🇨🇴 ➝ 🇨🇷</h1>
@@ -114,17 +118,21 @@ button{
         <img id="gif">
     </div>
 
-    <button id="acercar" class="boton-arriba">✨ Acercarnos un poquito</button>
+    <button id="acercar" class="boton-arriba">
+        ✨ Acercarnos un poquito
+    </button>
 </div>
 
 <script>
 let distancia = 1050;
 let clickFinal = 0;
+let musicaIniciada = false;
 
 const kmTexto = document.getElementById("km");
 const mensaje = document.getElementById("mensaje");
 const boton = document.getElementById("acercar");
 const gif = document.getElementById("gif");
+const musica = document.getElementById("musica");
 
 const eventos = [
     {km:975, texto:"😌 ¿Lista?"},
@@ -167,6 +175,12 @@ function actualizarMensaje(){
 
 boton.addEventListener("click", ()=>{
 
+    // 🎵 Iniciar música en el primer click
+    if(!musicaIniciada){
+        musica.play();
+        musicaIniciada = true;
+    }
+
     if(distancia > 0){
         distancia -= 75;
         if(distancia < 0) distancia = 0;
@@ -178,7 +192,6 @@ boton.addEventListener("click", ()=>{
     if(distancia === 0){
         clickFinal++;
 
-        // Primer evento especial en 0 km
         if(clickFinal === 1){
             mensaje.innerHTML = "✨ Llegamos a 0 km… pero esto apenas empieza.";
             gif.src = "IMG_3423.gif";
@@ -188,7 +201,6 @@ boton.addEventListener("click", ()=>{
             boton.innerText = "💞 Un último detalle";
         }
 
-        // Final definitivo
         if(clickFinal === 2){
             boton.style.display="none";
             iniciarLluvia();
