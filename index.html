@@ -21,6 +21,8 @@ body{
     max-width:500px;
     margin-left:auto;
     margin-right:auto;
+    position:relative;
+    z-index:2;
 }
 
 h1{
@@ -69,7 +71,7 @@ button{
 }
 
 .boton-arriba{
-    margin-top:10px;
+    margin-top:5px;
 }
 
 .boton-normal{
@@ -77,9 +79,22 @@ button{
 }
 
 .final-mensaje{
-    font-size:30px;
+    font-size:32px;
     font-weight:bold;
     color:#d6336c;
+}
+
+.emoji{
+    position:fixed;
+    top:-30px;
+    font-size:24px;
+    animation: caer 4s linear infinite;
+    pointer-events:none;
+}
+
+@keyframes caer{
+    0%{ transform: translateY(0); opacity:1; }
+    100%{ transform: translateY(110vh); opacity:0; }
 }
 </style>
 </head>
@@ -164,11 +179,16 @@ boton.addEventListener("click", ()=>{
         clickFinal++;
 
         if(clickFinal === 1){
+            gif.src = "IMG_3423.gif";
+            gif.style.display = "block";
+            gif.style.opacity = 1;
+            boton.className = "boton-normal";
             boton.innerText = "💞 Último pasito";
         }
 
         if(clickFinal === 2){
             boton.style.display="none";
+            iniciarLluvia();
             document.querySelector(".contenedor").innerHTML = `
                 <h1 class="final-mensaje">
                     🎉 Distancia física: 0 km 💖
@@ -177,23 +197,22 @@ boton.addEventListener("click", ()=>{
                     Igual me gusta recorrerla contigo.<br>
                     Sin prisa. Sin presión. Solo nosotros ❤️
                 </p>
-                <button onclick="mensajeFinal()">
-                    💞 Seguir acortando distancias invisibles
-                </button>
             `;
         }
     }
 });
 
-function mensajeFinal(){
-    document.querySelector(".contenedor").innerHTML = `
-        <h1 class="final-mensaje">
-            Gracias por hacer que hablar contigo sea tan fácil 💖
-        </h1>
-        <p style="font-size:22px;">
-            Eso vale más que cualquier kilómetro ❤️
-        </p>
-    `;
+function iniciarLluvia(){
+    setInterval(()=>{
+        const emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.innerText = ["💖","💞","💕","💘","❤️"][Math.floor(Math.random()*5)];
+        emoji.style.left = Math.random()*100 + "vw";
+        emoji.style.animationDuration = (3 + Math.random()*2) + "s";
+        document.body.appendChild(emoji);
+
+        setTimeout(()=> emoji.remove(), 5000);
+    },200);
 }
 </script>
 
