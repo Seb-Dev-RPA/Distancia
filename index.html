@@ -46,6 +46,7 @@ h1{
     border-radius:15px;
     margin-top:15px;
     transition: opacity 0.4s;
+    display:none; /* 👈 oculto al inicio */
 }
 
 button{
@@ -81,14 +82,8 @@ button:hover{
 }
 
 @keyframes caer{
-    from{
-        transform: translateY(-10vh);
-        opacity:1;
-    }
-    to{
-        transform: translateY(110vh);
-        opacity:0;
-    }
+    from{ transform: translateY(-10vh); opacity:1; }
+    to{ transform: translateY(110vh); opacity:0; }
 }
 </style>
 </head>
@@ -108,7 +103,7 @@ button:hover{
         Pero vamos a hacer algo al respecto…
     </div>
 
-    <img id="gif" src="IMG_3414.gif">
+    <img id="gif">
 
     <button id="acercar">✨ Acercarnos un poquito</button>
 </div>
@@ -135,12 +130,14 @@ const eventos = [
 function actualizarMensaje(){
     for(let evento of eventos){
         if(distancia <= evento.km && !evento.mostrado){
+
             mensaje.style.opacity = 0;
             gif.style.opacity = 0;
 
             setTimeout(()=>{
                 mensaje.innerHTML = evento.texto;
                 gif.src = evento.gif;
+                gif.style.display = "block";   // 👈 aparece solo cuando hay evento
                 mensaje.style.opacity = 1;
                 gif.style.opacity = 1;
             },300);
@@ -167,6 +164,7 @@ function lluviaContinua(){
 }
 
 boton.addEventListener("click", ()=>{
+
     if(distancia > 0){
         distancia -= 75;
         if(distancia < 0) distancia = 0;
@@ -175,21 +173,26 @@ boton.addEventListener("click", ()=>{
     }
 
     if(distancia === 0){
-        boton.style.display="none";
-
-        setTimeout(()=>{
-            document.querySelector(".contenedor").innerHTML = `
-                <h1>🎉 Distancia física: 0 km</h1>
-                <p>Igual me gusta recorrerla contigo.<br>
-                Sin prisa. Sin presión. Solo nosotros.</p>
-                <button onclick="mensajeFinal()">
-                💞 Seguir acortando distancias invisibles
-                </button>
-            `;
-            lluviaContinua();
-        },400);
+        boton.innerText = "💞 Último pasito";
+        boton.onclick = ultimoPaso;
     }
 });
+
+function ultimoPaso(){
+    boton.style.display="none";
+
+    setTimeout(()=>{
+        document.querySelector(".contenedor").innerHTML = `
+            <h1>🎉 Distancia física: 0 km</h1>
+            <p>Igual me gusta recorrerla contigo.<br>
+            Sin prisa. Sin presión. Solo nosotros.</p>
+            <button onclick="mensajeFinal()">
+            💞 Seguir acortando distancias invisibles
+            </button>
+        `;
+        lluviaContinua();
+    },400);
+}
 
 function mensajeFinal(){
     document.querySelector(".contenedor").innerHTML = `
