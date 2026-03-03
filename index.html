@@ -20,6 +20,9 @@ body{
     padding:20px;
     position:relative;
     z-index:2;
+    max-width:500px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 h1{
@@ -41,10 +44,16 @@ h1{
     transition: opacity 0.4s;
 }
 
+#gif-container{
+    height:240px; /* espacio fijo para que nada se mueva */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
 #gif{
-    width:220px;
+    max-width:220px;
     border-radius:15px;
-    margin:20px auto 0 auto;
     display:none;
     opacity:0;
     transition: opacity 0.4s;
@@ -59,11 +68,6 @@ button{
     background:#ff4d6d;
     color:white;
     cursor:pointer;
-    transition:0.2s;
-}
-
-button:hover{
-    transform:scale(1.05);
 }
 
 .final-mensaje{
@@ -71,38 +75,13 @@ button:hover{
     font-weight:bold;
     color:#d6336c;
 }
-
-#lluvia{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    pointer-events:none;
-    overflow:hidden;
-    z-index:1;
-}
-
-.emoji{
-    position:absolute;
-    animation: caer linear forwards;
-}
-
-@keyframes caer{
-    from{ transform: translateY(-10vh); opacity:1; }
-    to{ transform: translateY(110vh); opacity:0; }
-}
 </style>
 </head>
 
 <body>
 
-<div id="lluvia"></div>
-
 <div class="contenedor">
-    <h1>
-        📍 Distancia entre tú y yo
-    </h1>
+    <h1>📍 Distancia entre tú y yo</h1>
 
     <div class="distancia" id="km">1050 km</div>
 
@@ -110,22 +89,25 @@ button:hover{
         Pero vamos a hacer algo al respecto…
     </div>
 
-    <img id="gif">
+    <div id="gif-container">
+        <img id="gif">
+    </div>
 
     <button id="acercar">✨ Acercarnos un poquito</button>
 </div>
 
 <script>
 let distancia = 1050;
+let clickFinal = 0;
+
 const kmTexto = document.getElementById("km");
 const mensaje = document.getElementById("mensaje");
 const boton = document.getElementById("acercar");
 const gif = document.getElementById("gif");
-const lluvia = document.getElementById("lluvia");
 
 const eventos = [
-    {km:950, texto:"😌 ¿Lista?", gif:"IMG_3414.gif"},
-    {km:900, texto:"🌊 Cruzando un poquito de mar… Prometo no marearme.", gif:"IMG_3415.gif"},
+    {km:975, texto:"😌 ¿Lista?"},
+    {km:900, texto:"🌊 Cruzando un poquito de mar…", gif:"IMG_3415.gif"},
     {km:750, texto:"☁️ Las nubes dicen que vamos bien.", gif:"IMG_3418.gif"},
     {km:600, texto:"📞 Hablar contigo ya hace que esto se sienta más corto.", gif:"IMG_3419.gif"},
     {km:450, texto:"🐱 Nivel de ternura detectado en aumento.", gif:"IMG_3420.gif"},
@@ -143,9 +125,13 @@ function actualizarMensaje(){
 
             setTimeout(()=>{
                 mensaje.innerHTML = evento.texto;
-                gif.src = evento.gif;
-                gif.style.display = "block";
-                gif.style.opacity = 1;
+
+                if(evento.gif){
+                    gif.src = evento.gif;
+                    gif.style.display = "block";
+                    gif.style.opacity = 1;
+                }
+
                 mensaje.style.opacity = 1;
             },300);
 
@@ -154,67 +140,36 @@ function actualizarMensaje(){
     }
 }
 
-function crearEmoji(){
-    const emojis = ["💖","💕","🐱","✨"];
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
-    emoji.style.left = Math.random()*100 + "vw";
-    emoji.style.fontSize = (20 + Math.random()*25) + "px";
-    emoji.style.animationDuration = (3 + Math.random()*2) + "s";
-    lluvia.appendChild(emoji);
-    setTimeout(()=>emoji.remove(),5000);
-}
-
-function lluviaContinua(){
-    setInterval(crearEmoji,150);
-}
-
 boton.addEventListener("click", ()=>{
 
     if(distancia > 0){
         distancia -= 75;
         if(distancia < 0) distancia = 0;
+
         kmTexto.textContent = distancia + " km";
         actualizarMensaje();
     }
 
     if(distancia === 0){
-        boton.innerText = "💞 Último pasito";
-        boton.onclick = ultimoPaso;
+        clickFinal++;
+
+        if(clickFinal === 1){
+            boton.innerText = "💞 Último pasito";
+        }
+
+        if(clickFinal === 2){
+            boton.style.display="none";
+            document.querySelector(".contenedor").innerHTML = `
+                <h1 class="final-mensaje">
+                    🎉 Distancia física: 0 km 💖
+                </h1>
+                <p style="font-size:22px;">
+                    Igual me gusta recorrerla contigo ❤️
+                </p>
+            `;
+        }
     }
 });
-
-function ultimoPaso(){
-    boton.style.display="none";
-
-    setTimeout(()=>{
-        document.querySelector(".contenedor").innerHTML = `
-            <h1 class="final-mensaje">
-                🎉 Distancia física: 0 km 💖
-            </h1>
-            <p style="font-size:22px;">
-                Igual me gusta recorrerla contigo.<br>
-                Sin prisa. Sin presión. Solo nosotros ❤️
-            </p>
-            <button onclick="mensajeFinal()">
-                💞 Seguir acortando distancias invisibles
-            </button>
-        `;
-        lluviaContinua();
-    },400);
-}
-
-function mensajeFinal(){
-    document.querySelector(".contenedor").innerHTML = `
-        <h1 class="final-mensaje">
-            Gracias por hacer que hablar contigo sea tan fácil 💖
-        </h1>
-        <p style="font-size:22px;">
-            Eso vale más que cualquier kilómetro ❤️
-        </p>
-    `;
-}
 </script>
 
 </body>
