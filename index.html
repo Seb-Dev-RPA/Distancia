@@ -178,14 +178,17 @@ boton.addEventListener("click", ()=>{
     if(distancia === 0){
         clickFinal++;
 
+        // Primer evento especial en 0 km
         if(clickFinal === 1){
+            mensaje.innerHTML = "✨ Llegamos a 0 km… pero esto apenas empieza.";
             gif.src = "IMG_3423.gif";
             gif.style.display = "block";
             gif.style.opacity = 1;
             boton.className = "boton-normal";
-            boton.innerText = "💞 Último pasito";
+            boton.innerText = "💞 Un último detalle";
         }
 
+        // Final definitivo
         if(clickFinal === 2){
             boton.style.display="none";
             iniciarLluvia();
@@ -194,8 +197,8 @@ boton.addEventListener("click", ()=>{
                     🎉 Distancia física: 0 km 💖
                 </h1>
                 <p style="font-size:22px;">
-                    Igual me gusta recorrerla contigo.<br>
-                    Sin prisa. Sin presión. Solo nosotros ❤️
+                    Gracias por hacer que hablar contigo sea tan fácil 💞<br><br>
+                    Eso vale más que cualquier kilómetro ❤️
                 </p>
             `;
         }
